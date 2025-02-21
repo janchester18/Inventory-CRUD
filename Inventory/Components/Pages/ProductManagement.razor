@@ -1,0 +1,119 @@
+﻿@page "/products"
+@using Inventory.Models
+@using Inventory.Services
+@using Blazored.Modal
+@using Blazored.Modal.Services
+@inject ProductService ProductService
+@inject IModalService Modal
+
+<h1>Product Management</h1>
+
+<button class="btn btn-primary mb-3" @onclick="OpenAddProductModal">
+    <i class="bi bi-plus-lg"></i> Add Product
+</button>
+
+<input type="text" class="form-control mb-3" placeholder="Search products..." @bind="searchTerm" />
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in FilteredProducts)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Category</td>
+                <td>@product.Quantity</td>
+                <td>@String.Format("{0:C}", product.Price)</td>
+                <td>
+                    <span class="badge bg-@GetStatusBadgeColor(product.Status)">
+                        @product.Status
+                    </span>
+                </td>
+                <td>@FormatDate(product.CreatedAt)</td>
+                <td>@FormatDate(product.UpdatedAt)</td>
+                <td>
+                    <button class="btn btn-sm btn-primary me-1" @onclick="() => EditProduct(product.Id)">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDelete(product.Id)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<Product> products = new();
+    string searchTerm = string.Empty;
+    Product currentProduct = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await ProductService.GetProductsAsync();
+    }
+
+    IEnumerable<Product> FilteredProducts =>
+        string.IsNullOrWhiteSpace(searchTerm)
+            ? products
+            : products.Where(p =>
+                p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                p.Category.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+    async Task OpenAddProductModal()
+    {
+        // Open the Blazored modal, specifying the component that handles adding a product.
+        var modal = Modal.Show<AddProductModal>("Add Product");
+        var result = await modal.Result;
+
+        // If the modal wasn't cancelled, assume a new product was returned.
+        if (!result.Cancelled)
+        {
+            var newProduct = (Product)result.Data;
+            products.Add(newProduct);
+        }
+    }
+
+    void EditProduct(long id)
+    {
+        currentProduct = products.FirstOrDefault(p => p.Id == id);
+        // Optionally, you could open another modal for editing.
+    }
+
+    async Task ConfirmDelete(long id)
+    {
+        await ProductService.DeleteProductAsync(id);
+        products.RemoveAll(p => p.Id == id);
+    }
+
+    string FormatDate(DateTime date)
+    {
+        return date.ToString("g");
+    }
+
+    string GetStatusBadgeColor(string status) =>
+        status switch
+        {
+            "In Stock" => "success",
+            "Out of Stock" => "warning",
+            "Discontinued" => "danger",
+            _ => "secondary"
+        };
+}

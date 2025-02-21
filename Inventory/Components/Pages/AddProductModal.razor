@@ -1,0 +1,64 @@
+﻿@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Inventory.Models
+@using Inventory.Services
+@inject ProductService ProductService
+
+<EditForm Model="newProduct" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <InputText class="form-control" @bind-Value="newProduct.Name" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <InputTextArea class="form-control" @bind-Value="newProduct.Description" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Category</label>
+        <InputText class="form-control" @bind-Value="newProduct.Category" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Quantity</label>
+        <InputNumber class="form-control" @bind-Value="newProduct.Quantity" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Price</label>
+        <InputNumber class="form-control" @bind-Value="newProduct.Price" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Status</label>
+        <InputText class="form-control" @bind-Value="newProduct.Status" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Product</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+</EditForm>
+
+@code {
+    private Product newProduct = new Product();
+
+    [CascadingParameter]
+    public IModalReference ModalInstance { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        // Set timestamps (modify as needed)
+        newProduct.CreatedAt = DateTime.UtcNow;
+        newProduct.UpdatedAt = DateTime.UtcNow;
+
+        // Save the product via your service
+        await ProductService.AddProductAsync(newProduct);
+
+        // Close the modal with a success result
+        ModalInstance.Close(ModalResult.Ok(newProduct));
+    }
+
+    private void Cancel()
+    {
+        // Close the modal with a cancel result
+        ModalInstance.Close(ModalResult.Cancel());
+    }
+}
