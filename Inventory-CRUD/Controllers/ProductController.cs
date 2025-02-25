@@ -46,6 +46,7 @@ namespace Inventory_CRUD.Controllers
                 Price = request.Price,
                 Status = request.Status ?? "In-stock",
                 UpdatedAt = DateTime.Now,
+                ImageUrl = request.ImageUrl
             };
 
             _context.Products.Add(product);
@@ -69,6 +70,7 @@ namespace Inventory_CRUD.Controllers
             product.Quantity = request.Quantity ?? product.Quantity;
             product.Price = request.Price ?? product.Price;
             product.Status = request.Status ?? product.Status;
+            product.ImageUrl = request.ImageUrl ?? product.ImageUrl;
 
             await _context.SaveChangesAsync();
 

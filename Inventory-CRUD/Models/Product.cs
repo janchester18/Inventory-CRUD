@@ -18,6 +18,8 @@ namespace Inventory_CRUD.Models
         public double Price { get; set; }
         [Required]
         public string Status { get; set; } = "In-stock";
+        [Required]
+        public string ImageUrl { get; set; } = "images/deafult.jpg";
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; }

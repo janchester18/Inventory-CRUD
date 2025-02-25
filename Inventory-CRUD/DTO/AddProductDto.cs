@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inventory_CRUD.DTO
 {
@@ -10,5 +11,6 @@ namespace Inventory_CRUD.DTO
         public int Quantity { get; set; }
         public double Price { get; set; }
         public string? Status { get; set; } = "In-stock";
+        public string? ImageUrl { get; set; } = "images/default.jpg";
     }
 }
