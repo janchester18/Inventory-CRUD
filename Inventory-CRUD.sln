@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-CRUD", "Inventory-CRUD\Inventory-CRUD.csproj", "{59C72807-1BFA-1FFA-DC88-F5C1B1931F8E}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoServer", "..\TodoServer\TodoServer\TodoServer.csproj", "{87569379-B193-7E4B-E139-55426B2B1231}"
 EndProject
 Global
@@ -11,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59C72807-1BFA-1FFA-DC88-F5C1B1931F8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C72807-1BFA-1FFA-DC88-F5C1B1931F8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59C72807-1BFA-1FFA-DC88-F5C1B1931F8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59C72807-1BFA-1FFA-DC88-F5C1B1931F8E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87569379-B193-7E4B-E139-55426B2B1231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{87569379-B193-7E4B-E139-55426B2B1231}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87569379-B193-7E4B-E139-55426B2B1231}.Release|Any CPU.ActiveCfg = Release|Any CPU
